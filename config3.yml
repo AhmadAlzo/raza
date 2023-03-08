@@ -1,0 +1,30 @@
+language: en
+pipeline:
+- name: WhitespaceTokenizer
+- name: RegexFeaturizer
+- name: LexicalSyntacticFeaturizer
+- name: CountVectorsFeaturizer
+- analyzer: char_wb
+  max_ngram: 4
+  min_ngram: 1
+  name: CountVectorsFeaturizer
+- constrain_similarities: true
+  epochs: 100
+  name: DIETClassifier
+- name: EntitySynonymMapper
+- constrain_similarities: true
+  epochs: 100
+  name: ResponseSelector
+- ambiguity_threshold: 0.1
+  name: FallbackClassifier
+  threshold: 0.3
+policies:
+- name: MemoizationPolicy
+- name: RulePolicy
+- epochs: 100
+  max_history: 5
+  name: UnexpecTEDIntentPolicy
+- constrain_similarities: true
+  epochs: 100
+  max_history: 5
+  name: TEDPolicy
